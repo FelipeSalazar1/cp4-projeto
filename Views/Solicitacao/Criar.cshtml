@@ -1,0 +1,55 @@
+@model Solicitacao
+@{
+    ViewData["Title"] = "Solicitar Serviço";
+    var problema = ViewBag.Problema as Problema;
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-dark text-white py-3">
+                    <h3 class="mb-0">Solicitação do cliente</h3>
+                </div>
+                <div class="card-body p-4">
+                    @if (problema is not null)
+                    {
+                        <div class="alert alert-light border mb-4">
+                            <h5 class="fw-bold mb-1">@problema.Nome</h5>
+                            <p class="mb-1">@problema.Descricao</p>
+                            <small class="text-muted">Tempo de resposta: @problema.TempoResposta</small>
+                        </div>
+                    }
+
+                    <form asp-action="Criar" method="post">
+                        <input asp-for="ProblemaId" type="hidden" />
+                        <input asp-for="ProblemaNome" type="hidden" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="NomeCliente" class="form-label fw-semibold">Nome</label>
+                            <input asp-for="NomeCliente" class="form-control" />
+                            <span asp-validation-for="NomeCliente" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="EmailCliente" class="form-label fw-semibold">E-mail</label>
+                            <input asp-for="EmailCliente" class="form-control" />
+                            <span asp-validation-for="EmailCliente" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+                            <button type="submit" class="btn btn-success">Enviar solicitação</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

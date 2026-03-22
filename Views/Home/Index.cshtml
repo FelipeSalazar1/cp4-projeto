@@ -1,0 +1,71 @@
+@model List<Problema>
+@{
+    ViewData["Title"] = "Tela Inicial";
+}
+
+<section class="hero-section text-white py-5 mb-4">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="badge bg-warning text-dark mb-3">Consultoria em Desenvolvimento</span>
+                <h1 class="display-5 fw-bold">Escolha o problema e solicite atendimento técnico</h1>
+                <p class="lead opacity-75 mb-0">O cliente visualiza os serviços, envia a solicitação e o Tech Líder aprova ou reprova no painel administrativo.</p>
+            </div>
+            <div class="col-lg-5">
+                <div class="info-box">
+                    <h5 class="fw-bold">Fluxo do projeto</h5>
+                    <ul class="mb-0">
+                        <li>Cliente escolhe um card</li>
+                        <li>Preenche nome e e-mail</li>
+                        <li>Pedido fica pendente</li>
+                        <li>Tech Líder aprova ou reprova</li>
+                        <li>Solicitação pode ser enviada ao dev por WhatsApp</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    @if (TempData["MensagemSucesso"] is not null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        @foreach (var problema in Model)
+        {
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm border-0 card-problema">
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge bg-dark mb-3">@problema.TempoResposta</span>
+                        <h5 class="card-title fw-bold">@problema.Nome</h5>
+                        <p class="card-text text-muted flex-grow-1">@problema.Descricao</p>
+                        <p class="fw-semibold mb-3">Investimento: @problema.Preco.ToString("C")</p>
+                        <a asp-controller="Solicitacao"
+                           asp-action="Criar"
+                           asp-route-problemaId="@problema.Id"
+                           class="btn btn-primary w-100 btn-solicitar"
+                           data-problema="@problema.Nome">
+                            Solicitar serviço
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.btn-solicitar').forEach(botao => {
+            botao.addEventListener('click', function () {
+                alert('Seu pedido foi solicitado. Agora preencha nome e e-mail para concluir.');
+            });
+        });
+    </script>
+}
